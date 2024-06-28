@@ -1,0 +1,20 @@
+---
+
+- name: "Node exporter: Download and unpack Node Exporter"
+  ansible.builtin.unarchive:
+    src: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+    dest: /usr/local/bin/
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+#  notify: restart node_exporter
+
+- name: "Node exporter: Copy node_exporter.service"
+  copy:
+    src: node_exporter.service
+    dest: /etc/systemd/system/node_exporter.service
+
+- name: "Node exporter: Start service Node Exporter"
+  systemd:
+    name: node_exporter
+    state: started
+    enabled: yes

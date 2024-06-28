@@ -1,0 +1,16 @@
+---
+
+- name: "Base-setup: Update and upgrade all packages to the latest version"
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+    cache_valid_time: 3600
+
+- name: "Base-setup: Install required packages"
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - software-properties-common

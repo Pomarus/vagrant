@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+
+  prometheus:
+    image: prom/{{ prometheus }}
+    user: root
+    container_name: prometheus
+    restart: always
+    volumes:
+      - {{ project_dir }}/prometheus/etc:/etc/prometheus/
+      - {{ project_dir }}/prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - 9090:9090
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/{{ grafana }}
+    user: root
+    container_name: grafana
+    restart: always
+    ports:
+      - '3000:3000'
+    volumes:
+      - {{ project_dir }}/grafana:/var/lib/grafana
+      - {{ project_dir }}/provisioning:/etc/grafana/provisioning
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
+          gateway: 172.18.0.1

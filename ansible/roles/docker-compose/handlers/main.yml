@@ -1,0 +1,6 @@
+---
+
+- name: restart-monitoring
+  service:
+    name: monitoring
+    state: restarted

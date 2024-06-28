@@ -1,0 +1,52 @@
+---
+
+- name: "Docker-compose: Сreate dirs"
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ project_dir }}/prometheus/etc"
+    - "{{ project_dir }}/provisioning/dashboards"
+    - "{{ project_dir }}/provisioning/datasources"
+    - "{{ project_dir }}/grafana"
+
+- name: "Docker-compose: Copy files"
+  copy:
+    src: ./
+    dest: "{{ project_dir }}"
+    directory_mode: yes
+
+- name: "Docker-compose: Copy files prometheus"
+  copy:
+    src: prometheus.yml
+    dest: "{{ project_dir }}/prometheus/etc"
+
+- name: "Docker-compose: Copy dashboard"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ project_dir }}/provisioning/dashboards"
+  loop:
+    - "dashboard.json"
+    - "dashboard.yml"
+
+- name: "Docker-compose: Copy datasources"
+  copy:
+    src: datasources.yml
+    dest: "{{ project_dir }}/provisioning/datasources"
+
+- name: "Docker-compose: docker-compose.j2 add"
+  template:
+    src: docker-compose.j2
+    dest: "{{ project_dir }}/docker-compose.yaml"
+#  notify: restart-monitoring
+
+- name: "Docker-compose: monitoring.j2 add"
+  template:
+    src: monitoring.j2
+    dest: /etc/systemd/system/monitoring.service
+
+- name: "Docker-compose: Start service Monitoring"
+  systemd:
+    name: monitoring
+    state: started
+    enabled: yes

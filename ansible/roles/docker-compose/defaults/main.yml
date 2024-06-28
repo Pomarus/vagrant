@@ -1,0 +1,5 @@
+---
+
+prometheus: prometheus:v2.45.6
+grafana: grafana-enterprise:10.2.8
+project_dir: /opt/monitoring
