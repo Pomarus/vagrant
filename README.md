@@ -5,8 +5,7 @@
 ## Предварительные условия
 
 - Vagrant (https://developer.hashicorp.com/vagrant/install)
-- VirtualBox (или другой провайдер, совместимый с Vagrant)
-- Ansible (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- VirtualBox (https://www.virtualbox.org/wiki/Downloads) или другой провайдер, совместимый с Vagrant)
 
 ## Инструкции по установке и запуску
 
@@ -37,6 +36,7 @@
 6. Авторизация в Grafana
    
    Войдите в Grafana используя стандартные учетные данные:
+   
    - Логин: admin
    - Пароль: admin
 
@@ -54,5 +54,3 @@
   vagrant destroy
 
 - Dashboard может появиться не сразу, а через несколько секунд после запуска контейнера
-
-```
